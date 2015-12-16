@@ -1,0 +1,4 @@
+output/
+*.pyc
+test.py
+.idea

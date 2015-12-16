@@ -1,0 +1,2 @@
+class UrlSet(dict):
+    pass
