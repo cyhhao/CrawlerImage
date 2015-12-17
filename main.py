@@ -1,6 +1,9 @@
 # coding=utf-8
 import os
+import random
 import re
+from httplib import IncompleteRead
+
 import requests
 from gevent import Timeout, sleep
 from Libs import urlTools
@@ -8,7 +11,8 @@ from Libs.Queue import Queue
 from Libs.Task import Task
 from Libs.UrlSet import UrlSet
 from Libs.Url import Url
-from settings import proxies, headers, output, request_timeout, outsite_page, doc_pool_max, res_pool_max, main_url
+from settings import proxies, headers, output, request_timeout, outsite_page, doc_pool_max, res_pool_max, main_url, \
+    wait_time, recursion_deep
 from pyquery import PyQuery as pq
 import gevent.monkey
 import sys
@@ -18,11 +22,8 @@ sys.setdefaultencoding('utf8')
 gevent.monkey.patch_all()
 
 
-# todo: 资源爬别的站，页面只爬本站
-
-# todo: 去掉url 的#后面的东西
 # todo: 请求资源时加refer
-# todo: 协程
+# todo: 网络错误继续加入队列尾
 
 class Crawler:
     def __init__(self, url):
@@ -50,10 +51,15 @@ class Crawler:
         self.document_task.start()
 
     def requestGet(self, url):
-        # sleep(1)
+        wait = random.random() * (wait_time[1] - wait_time[0])
+        sleep(wait)
         timeout = Timeout(request_timeout)
         timeout.start()
-        req = requests.get(url=url, verify=True, headers=headers, proxies=proxies)
+        try:
+            req = requests.get(url=url, verify=True, headers=headers, proxies=proxies)
+        except IncompleteRead:
+            pass
+            # todo:未知错误，暂还未查清
         timeout.cancel()
         return req
 
@@ -148,9 +154,10 @@ class Crawler:
                     pq(li).attr(attr, html_url)
 
     def getDocument(self, url, file_path, file_name, deep):
+        if 0 <= recursion_deep < deep:
+            return
         url = urlTools.dealUrl2Request(url, url)
-        # file_path, file_name, html_url = urlTools.dealUrl2File(url, url, self.host, True)
-        # print file_path + '|' + file_name + "|"
+
         if file_path == '' and file_name == '':
             file_name = 'index.html'
         try:

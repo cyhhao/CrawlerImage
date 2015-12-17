@@ -1,6 +1,6 @@
 # coding=utf-8
 # 要爬取的网站url
-main_url = 'http://www.liaoxuefeng.com/'
+main_url = 'http://mi.com/'
 
 # 设置代理
 proxies = None
@@ -22,10 +22,10 @@ output = './output/'
 request_timeout = 100
 
 # 爬取页面的协程数
-doc_pool_max = 2
+doc_pool_max = 20
 
 # 爬取资源文件的协程数
-res_pool_max = 2
+res_pool_max = 20
 
 # 每次请求随机延迟的时间，单位s，[最大值,最小值]
 wait_time = [1, 3]
@@ -33,7 +33,7 @@ wait_time = [1, 3]
 # 是否爬取该站以外的URL
 outsite_page = False
 
-# 爬取页面的深度，从0开始计，爬到第N层为止
+# 爬取页面的深度，从0开始计，爬到第N层为止，-1表示无限制
 recursion_deep = 1
 
 # ------------------------------- #
