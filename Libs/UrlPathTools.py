@@ -90,7 +90,7 @@ class UrlPathTools:
         #     file_path = file_path[1:]
         # 为了解决同一目录下，文件和文件夹名不能重复的问题
         if file_name != '':
-            file_name = 'f'+file_name
+            file_name = 'f_'+file_name
         url = file_path.addUrlEnd() + file_name
         url = url.addUrlStart()
 

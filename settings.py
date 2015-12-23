@@ -1,9 +1,12 @@
 # coding=utf-8
 # 要爬取的网站url
-main_url = 'http://mi.com/'
+main_url = 'http://139.129.8.188/'
 
 # 设置代理
-proxies = None
+proxies = {
+    "http": "127.0.0.1:1080",
+    "https": "127.0.0.1:1080",
+}
 # 代理格式:
 # {
 #     "http": "127.0.0.1:1080",
@@ -17,6 +20,9 @@ headers = {
 
 # 输出镜像文件的路径，最后要加 '/'
 output = './output/'
+
+# 日志及爬虫进度存储目录，最后要加 '/'
+logs_path = './logs/'
 
 # 每次请求的最大超时时间
 request_timeout = 100
@@ -34,8 +40,13 @@ wait_time = [1, 3]
 outsite_page = False
 
 # 爬取页面的深度，从0开始计，爬到第N层为止，-1表示无限制
-recursion_deep = 1
+recursion_deep = -1
 
+# 请求资源文件出错最大重试次数（超时也算出错）
+source_error_max = 20
+
+# 请求页面出错最大重试次数（超时也算出错）
+document_error_max = 40
 # ------------------------------- #
 
 # 本地浏览端口号
